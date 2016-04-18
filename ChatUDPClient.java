@@ -37,6 +37,7 @@ public class ChatUDPClient extends JFrame implements ActionListener {
 	JTextField portTF;
 	JTextField nickNameTF;
 	JButton sendBtn;
+	JButton connBtn;
 	static Thread getMsgThread;
 
 	public ChatUDPClient() {
@@ -92,7 +93,7 @@ public class ChatUDPClient extends JFrame implements ActionListener {
 		portTF = new JTextField(4);
 		JLabel lb3 = new JLabel("Nickname");
 		nickNameTF = new JTextField(6);
-		JButton connBtn = new JButton("Connect");
+		connBtn = new JButton("Connect");
 
 		connBtn.addActionListener(this);
 		// init default values
@@ -112,6 +113,7 @@ public class ChatUDPClient extends JFrame implements ActionListener {
 		// chat view
 		chatView = new JTextArea();
 		chatView.setEditable(false);
+		chatView.setLineWrap(true);
 		JScrollPane conversationScrollView = new JScrollPane(chatView);
 		JScrollPane chatInputScrollView = new JScrollPane();
 
@@ -119,6 +121,8 @@ public class ChatUDPClient extends JFrame implements ActionListener {
 
 		// chat input
 		chatInput = new JTextArea(3, 10);
+		chatInput.setLineWrap(true);
+		chatInput.setEditable(false);
 		chatInput.getDocument().addDocumentListener(new DocumentListener() {
 			
 			@Override
@@ -199,6 +203,12 @@ public class ChatUDPClient extends JFrame implements ActionListener {
 				String msg = nickName + "\t" + "join";
 				sendMsg(msg);
 				getMsgThread.start();
+				chatInput.setEditable(true);
+				this.setTitle(nickName + "'s chat box");
+				hostTF.setEditable(false);
+				portTF.setEditable(false);
+				nickNameTF.setEditable(false);
+				connBtn.setEnabled(false);
 			} catch (IOException e2) {
 				e2.printStackTrace();
 			}
@@ -212,6 +222,8 @@ public class ChatUDPClient extends JFrame implements ActionListener {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			
+			chatInput.setText("");
 			break;
 		default:
 			break;
